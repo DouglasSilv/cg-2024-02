@@ -9,13 +9,17 @@
                 "-g",
                 // Aqui você inclui os caminhos para os diretórios que contém os cabeçalhos das funções
                 "-I${workspaceFolder}/Dependencies/GLAD/include", //GLAD
-                "-I${workspaceFolder}/Dependencies/assimp/include", //ASSIMP
-                "-I${workspaceFolder}/Dependencies/assimp", //ASSIMP
                 "-I${workspaceFolder}/Dependencies/glfw-3.4.bin.WIN64/include", //GLFW
                 "-I${workspaceFolder}/Dependencies/glm", //GLM
+                "-I${workspaceFolder}/src", //GLM
                 "${file}",
                 // Aqui você inclui o caminho para os outros arquivos .c ou .cpp
                 "${workspaceFolder}/glad.c",  //GLAD
+                "${workspaceFolder}/src/camera.cpp",
+                "${workspaceFolder}/src/mesh.cpp",
+                "${workspaceFolder}/src/model.cpp",
+                "${workspaceFolder}/src/shader.cpp",
+                "${workspaceFolder}/src/obj_parser.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 // Aqui você inclui o caminho para os diretórios que possuem as bibliotecas estáticas

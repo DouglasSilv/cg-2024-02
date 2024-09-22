@@ -10,7 +10,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) : Front
 }
 
 glm::mat4 Camera::GetViewMatrix() {
-    return glm::lookAt(Position, Position + Front, Up);
+    return glm::lookAt(Position, glm::vec3(0.0f, 0.0f, 0.0f), Up); // Camera sempre olha para o centro
 }
 
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime) {

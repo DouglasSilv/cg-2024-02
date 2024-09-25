@@ -19,7 +19,7 @@
                 "${workspaceFolder}/src/mesh.cpp",
                 "${workspaceFolder}/src/model.cpp",
                 "${workspaceFolder}/src/shader.cpp",
-                "${workspaceFolder}/src/obj_parser.cpp",
+                "${workspaceFolder}/src/object.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 // Aqui você inclui o caminho para os diretórios que possuem as bibliotecas estáticas

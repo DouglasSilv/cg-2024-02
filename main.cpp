@@ -1,24 +1,53 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include "shader.h"
 #include "camera.h"
 #include "object.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float fov = 45.0f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-float screenWidth = 800;
-float screenHeight = 600;
+float screenWidth = 1800;
+float screenHeight = 1000;
 float rotationAngleY = 0.0f;
 float rotationAngleX = 0.0f;
-glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 std::vector<Object> objects;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+}
+
+void loadSceneFromJSON(const std::string& filePath, glm::vec3& lightPos, glm::vec3& lightColor) {
+    // Abrir o arquivo JSON
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        std::cerr << "Erro ao abrir o arquivo JSON: " << filePath << std::endl;
+        return;
+    }
+
+    // Ler e parsear o JSON
+    json sceneJson;
+    file >> sceneJson;
+
+    // Pegar posição e cor da luz
+    lightPos = glm::vec3(
+        sceneJson["light"]["position"][0].get<float>(),
+        sceneJson["light"]["position"][1].get<float>(),
+        sceneJson["light"]["position"][2].get<float>()
+    );
+
+    lightColor = glm::vec3(
+        sceneJson["light"]["color"][0].get<float>(),
+        sceneJson["light"]["color"][1].get<float>(),
+        sceneJson["light"]["color"][2].get<float>()
+    );
 }
 
 void select_object(int selectedIndex) {
@@ -142,10 +171,10 @@ int main() {
     Shader shader("D:/cg-2024-02/shaders/vertex_shader.glsl", "D:/cg-2024-02/shaders/fragment_shader.glsl");
 
     // Criação dos objetos
-    Object object1("D:/cg-2024-02/assets/Kratos.obj", glm::vec3(0.0f, 0.0f, 0.0f));
-    Object object2("D:/cg-2024-02/assets/monkey.obj", glm::vec3(2.0f, 0.0f, 0.0f));
+    Object object1("D:/cg-2024-02/Modelos3D/Suzannes/SuzanneHigh.obj", glm::vec3(0.0f, 0.0f, 0.0f));
+    //Object object2("D:/cg-2024-02/Modelos3D/Planetas/planeta.obj", glm::vec3(2.0f, 0.0f, 0.0f));
     objects.push_back(object1);
-    objects.push_back(object2);
+    //objects.push_back(object2);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -153,6 +182,11 @@ int main() {
         objects[0].isSelected = true;
     }
     
+    glm::vec3 lightPos;
+    glm::vec3 lightColor;
+
+    // Carregar dados da cena a partir do JSON
+    loadSceneFromJSON("D:/cg-2024-02/scene.json", lightPos, lightColor);
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -162,11 +196,12 @@ int main() {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
         shader.use();
         shader.setVec3("lightPos", lightPos);
-        shader.setVec3("viewPos", camera.Position);
-        shader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-        shader.setVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+        shader.setVec3("cameraPos", camera.Position);
+        shader.setVec3("lightColor", lightColor);
+        shader.setVec3("objectColor", glm::vec3(1.0f, 0.25f, 0.22f));
 
         glm::mat4 projection = glm::perspective(glm::radians(fov), screenWidth / screenHeight, 0.1f, 100.0f);
         shader.setMat4("projection", projection);

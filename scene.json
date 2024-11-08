@@ -1,0 +1,25 @@
+{
+  "objects": [
+    {
+      "file": "D:/cg-2024-02/Modelos3D/Suzannes/SuzanneHigh.obj",
+      "transformations": {
+        "rotation": [0, 0, 0],
+        "translation": [0, 0, 0],
+        "scale": 1.0
+      }
+    }
+  ],
+  "light": {
+    "position": [1.1, 1, 2.0],
+    "color": [1, 1, 1]
+  },
+  "camera": {
+    "position": [0, 0, 5],
+    "orientation": [0, 0, 0],
+    "frustrum": {
+      "near": 0.1,
+      "far": 100,
+      "fov": 45
+    }
+  }
+}

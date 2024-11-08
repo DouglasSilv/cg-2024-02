@@ -1,19 +1,25 @@
-#version 450 core
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec2 aTexCoords;
-
-out vec3 FragPos;
-out vec3 Normal;
-out vec2 TexCoords;
+#version 450
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 color;
+layout (location = 2) in vec2 texc;
+layout (location = 3) in vec3 normal;
 
 uniform mat4 model;
-uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 view;
 
-void main() {
-    FragPos = vec3(model * vec4(aPos, 1.0));
-    Normal = mat3(transpose(inverse(model))) * aNormal;
-    TexCoords = aTexCoords;
-    gl_Position = projection * view * vec4(FragPos, 1.0);
+//Variáveis que irão para o fragment shader
+out vec3 finalColor;
+out vec2 texCoord;
+out vec3 scaledNormal;
+out vec3 fragPos;
+
+void main()
+{
+	//...pode ter mais linhas de código aqui!
+	gl_Position = projection * view * model * vec4(position, 1.0);
+	finalColor = color;
+    texCoord = vec2(texc.s, 1 - texc.t);
+    fragPos = vec3(model * vec4(position, 1.0));
+    scaledNormal = vec3(model * vec4(normal, 1.0));
 }

@@ -13,7 +13,7 @@ public:
     bool isSelected;
 
     Object(const std::string& path, glm::vec3 startPosition);
-    void Draw(Shader& shader);
+    void Draw();
     void Rotate(float deltaX, float deltaY);
     void Translate(float deltaX, float deltaY, float deltaZ);
 };

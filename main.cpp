@@ -184,11 +184,9 @@ int main() {
     glViewport(0, 0, screenWidth, screenHeight);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    Shader shader("D:/cg-2024-02/shaders/vertex_shader.glsl", "D:/cg-2024-02/shaders/fragment_shader.glsl");
-
     // Criação dos objetos
-    Object object1("D:/cg-2024-02/Modelos3D/Suzannes/SuzanneHigh.obj", glm::vec3(0.0f, 0.0f, 0.0f));
-    Object object2("D:/cg-2024-02/Modelos3D/Planetas/planeta.obj", glm::vec3(2.0f, 0.0f, 0.0f));
+    Object object1("D:/cg-2024-02/Modelos3D/Planetas/planeta.obj", glm::vec3(0.0f, 0.0f, 0.0f));
+    Object object2("D:/cg-2024-02/Modelos3D/Suzannes/SuzanneHigh.obj", glm::vec3(0.0f, 0.0f, 0.0f));
     objects.push_back(object1);
     objects.push_back(object2);
 
@@ -205,6 +203,7 @@ int main() {
     float nearPlane, farPlane;
     loadSceneFromJSON("D:/cg-2024-02/scene.json", lightPos, lightColor, camera, fov, nearPlane, farPlane);
     while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -213,24 +212,21 @@ int main() {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader.use();
-        shader.setVec3("lightPos", lightPos);
-        shader.setVec3("cameraPos", camera.Position);
-        shader.setVec3("lightColor", lightColor);
-        shader.setVec3("objectColor", glm::vec3(1.0f, 0.25f, 0.22f));
-
         glm::mat4 projection = glm::perspective(glm::radians(fov), screenWidth / screenHeight, nearPlane, farPlane);
-        shader.setMat4("projection", projection);
 
         glm::mat4 view = camera.GetViewMatrix();
-        shader.setMat4("view", view);
 
         for (Object& object : objects) {
-            object.Draw(shader);
+            object.model.shader.use();
+            object.model.shader.setVec3("lightPos", lightPos);
+            object.model.shader.setVec3("cameraPos", camera.Position);
+            object.model.shader.setVec3("lightColor", lightColor);
+            object.model.shader.setMat4("projection", projection);
+            object.model.shader.setMat4("view", view);
+            object.Draw();
         }
 
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
     glfwTerminate();

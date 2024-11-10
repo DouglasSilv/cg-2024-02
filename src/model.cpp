@@ -1,5 +1,6 @@
 // model.cpp
 #include "model.h"
+#include "shader.h"
 #include "materialproperties.h"
 #include <iostream>
 #include <fstream>
@@ -7,12 +8,14 @@
 #include <stb_image.h>
 #include <unordered_map>
 
-Model::Model(const std::string& path) {
+Model::Model(const std::string& path)
+    : shader("D:/cg-2024-02/shaders/vertex_shader.glsl", "D:/cg-2024-02/shaders/fragment_shader.glsl") {
     directory = path.substr(0, path.find_last_of('/'));
+    shader.use();
     loadModel(path);
 }
 
-void Model::Draw(Shader& shader) {
+void Model::Draw() {
     for (Mesh& mesh : meshes) {
         shader.setVec3("kd", mesh.material.Kd);
         shader.setVec3("ka", mesh.material.Ka);
@@ -33,13 +36,7 @@ void Model::loadModel(const std::string& path) {
 
     std::string line;
     bool isReadingFace = false;
-    static std::vector<unsigned int> indices;
-    static std::vector<Vertex> vertices;
     while (std::getline(file, line)) {
-        static std::vector<glm::vec3> tempPositions;
-        static std::vector<glm::vec3> tempNormals;
-        static std::vector<glm::vec2> tempTexCoords;
-
         std::istringstream ss(line);
         std::string identifier;
         ss >> identifier;

@@ -1,6 +1,5 @@
 #version 450
 
-in vec3 finalColor;
 in vec2 texCoord;
 in vec3 scaledNormal;
 in vec3 fragPos;
@@ -23,7 +22,6 @@ void main()
 
     //Coeficiente luz ambiente
     vec3 ambient = ka * lightColor;
-
 
     //Coeficiente reflexão difusa
     vec3 diffuse;

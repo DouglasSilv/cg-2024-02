@@ -1,16 +1,20 @@
 {
   "objects": [
     {
+      "file": "D:/cg-2024-02/Modelos3D/Planetas/planeta.obj",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [1.0, 1.0, 1.0]
+    },
+    {
       "file": "D:/cg-2024-02/Modelos3D/Suzannes/SuzanneHigh.obj",
-      "transformations": {
-        "rotation": [0, 0, 0],
-        "translation": [0, 0, 0],
-        "scale": 1.0
-      }
+      "position": [-1.0, 0.0, 0.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [1.0, 1.0, 1.0]
     }
   ],
   "light": {
-    "position": [1.1, 1, 2.0],
+    "position": [100, 50, 0.0],
     "color": [1, 1, 1]
   },
   "camera": {

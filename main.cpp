@@ -18,6 +18,7 @@ float screenWidth = 1800;
 float screenHeight = 1000;
 float rotationAngleY = 0.0f;
 float rotationAngleX = 0.0f;
+float rotationAngleZ = 0.0f;
 std::vector<Object> objects;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -63,7 +64,38 @@ void loadSceneFromJSON(const std::string& filePath, glm::vec3& lightPos, glm::ve
 
     // Aplicar posição e orientação inicial da câmera
     camera.Position = cameraPosition;
-    camera.Front = glm::normalize(cameraOrientation);  // Normalizar a orientação para garantir direção correta
+    camera.Front = glm::normalize(cameraOrientation);
+
+    bool first = true;
+    for (const auto& objData : sceneJson["objects"]) {
+        std::string file = objData["file"];
+        glm::vec3 position = glm::vec3(
+            objData["position"][0].get<float>(),
+            objData["position"][1].get<float>(),
+            objData["position"][2].get<float>()
+        );
+
+        glm::vec3 rotation = glm::vec3(
+            objData["rotation"][0].get<float>(),
+            objData["rotation"][1].get<float>(),
+            objData["rotation"][2].get<float>()
+        );
+
+        glm::vec3 scale = glm::vec3(
+            objData["scale"][0].get<float>(),
+            objData["scale"][1].get<float>(),
+            objData["scale"][2].get<float>()
+        );
+
+        Object obj(file, position);  // Cria o objeto com o arquivo e a posição inicial
+        obj.SetRotation(rotation);   // Aplica a rotação
+        obj.SetScale(scale);         // Aplica a escala
+        if (first) {
+            obj.isSelected = true;
+            first = false;
+        }
+        objects.push_back(obj);      // Adiciona ao vetor de objetos
+    }
 }
 
 void select_object(int selectedIndex) {
@@ -84,6 +116,7 @@ void processInput(GLFWwindow* window) {
     float translationSpeed = 2.5f * deltaTime; // Velocidade da translação
     rotationAngleY = 0.0f;
     rotationAngleX = 0.0f;
+    rotationAngleZ = 0.0f;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         rotationAngleY -= rotationSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
@@ -92,10 +125,14 @@ void processInput(GLFWwindow* window) {
         rotationAngleX -= rotationSpeed;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         rotationAngleX += rotationSpeed;
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+        rotationAngleZ -= rotationSpeed;
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+        rotationAngleZ += rotationSpeed;
 
     for (Object& object : objects) {
         if (object.isSelected) {
-            object.Rotate(rotationAngleX * deltaTime, rotationAngleY * deltaTime);
+            object.Rotate(rotationAngleX * deltaTime, rotationAngleY * deltaTime, rotationAngleZ * deltaTime);
         }
     }
 
@@ -184,17 +221,7 @@ int main() {
     glViewport(0, 0, screenWidth, screenHeight);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // Criação dos objetos
-    Object object1("D:/cg-2024-02/Modelos3D/Planetas/planeta.obj", glm::vec3(0.0f, 0.0f, 0.0f));
-    Object object2("D:/cg-2024-02/Modelos3D/Suzannes/SuzanneHigh.obj", glm::vec3(0.0f, 0.0f, 0.0f));
-    objects.push_back(object1);
-    objects.push_back(object2);
-
     glEnable(GL_DEPTH_TEST);
-
-    if (objects.size() > 0) {
-        objects[0].isSelected = true;
-    }
     
     glm::vec3 lightPos;
     glm::vec3 lightColor;

@@ -35,3 +35,27 @@ void Object::SetRotation(const glm::vec3& rotation) {
 void Object::SetScale(const glm::vec3& scale) {
     this->scale = scale;
 }
+
+void Object::Animate(float time) {
+    if (!enableAnimation || controlPoints.size() < 4) return;
+
+    float t = fmod(time, 1.0f); // Normaliza o tempo para [0, 1]
+    position = CalculateHermitePosition(t);
+}
+
+glm::vec3 Object::CalculateHermitePosition(float t) {
+    glm::vec3 p0 = controlPoints[0];
+    glm::vec3 p1 = controlPoints[1];
+    glm::vec3 p2 = controlPoints[2];
+    glm::vec3 p3 = controlPoints[3];
+
+    float t2 = t * t;
+    float t3 = t2 * t;
+
+    glm::vec3 position = (2 * t3 - 3 * t2 + 1) * p0 +
+                         (t3 - 2 * t2 + t) * p1 +
+                         (-2 * t3 + 3 * t2) * p2 +
+                         (t3 - t2) * p3;
+
+    return position;
+}

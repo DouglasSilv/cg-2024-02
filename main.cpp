@@ -94,6 +94,16 @@ void loadSceneFromJSON(const std::string& filePath, glm::vec3& lightPos, glm::ve
             obj.isSelected = true;
             first = false;
         }
+
+        // Carregar configuração de animação
+        if (objData.contains("animation") && objData["animation"]["enabled"]) {
+            obj.enableAnimation = true;
+            for (const auto& point : objData["animation"]["controlPoints"]) {
+                glm::vec3 controlPoint(point[0].get<float>(), point[1].get<float>(), point[2].get<float>());
+                obj.controlPoints.push_back(controlPoint);
+            }
+        }
+        
         objects.push_back(obj);      // Adiciona ao vetor de objetos
     }
 }
@@ -250,6 +260,7 @@ int main() {
             object.model.shader.setVec3("lightColor", lightColor);
             object.model.shader.setMat4("projection", projection);
             object.model.shader.setMat4("view", view);
+            object.Animate(currentFrame);
             object.Draw();
         }
 

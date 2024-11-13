@@ -1,21 +1,49 @@
 {
   "objects": [
     {
-      "file": "D:/cg-2024-02/Modelos3D/Planetas/planeta.obj",
-      "position": [0.0, 0.0, 0.0],
-      "rotation": [0.0, 0.0, 0.0],
-      "scale": [1.0, 1.0, 1.0]
+      "file": "D:/cg-2024-02/Modelos3D/Naves/LightCruiser05.obj",
+      "position": [0.5, 0.7, -0.5],
+      "rotation": [0.3, 0.3, 0.3],
+      "scale": [0.02, 0.02, 0.02],
+      "animation": {
+                "enabled": false,
+                "type": "hermite",
+                "controlPoints": [
+                    [2.0, 0.7, 1.0],
+                    [0.0, 0.6, 0.5],
+                    [-2.0, 0.4, 0.0],
+                    [-4.0, 0.0, -1.0]
+                ]
+            }
     },
     {
-      "file": "D:/cg-2024-02/Modelos3D/Suzannes/SuzanneHigh.obj",
-      "position": [-1.0, 0.0, 0.0],
+      "file": "D:/cg-2024-02/Modelos3D/Planetas/Terra/planeta.obj",
+      "position": [-0.2, 0.0, 0.0],
       "rotation": [0.0, 0.0, 0.0],
-      "scale": [1.0, 1.0, 1.0]
+      "scale": [0.4, 0.4, 0.4]
+    },
+    {
+      "file": "D:/cg-2024-02/Modelos3D/Planetas/Mercurio/planeta.obj",
+      "position": [-1.5, 0, 0.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [0.15, 0.15, 0.15]
+    },
+    {
+      "file": "D:/cg-2024-02/Modelos3D/Planetas/Venus/planeta.obj",
+      "position": [-0.95, 0, 0.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [0.3, 0.3, 0.3]
+    },
+    {
+      "file": "D:/cg-2024-02/Modelos3D/Planetas/Marte/planeta.obj",
+      "position": [0.2, 0.0, 0.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [0.3, 0.3, 0.3]
     }
   ],
   "light": {
-    "position": [100, 50, 0.0],
-    "color": [1, 1, 1]
+    "position": [-10, 0, 0.0],
+    "color": [1, 1, 0.7]
   },
   "camera": {
         "position": [0.0, 0.0, 3.0],

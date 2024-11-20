@@ -12,6 +12,7 @@ public:
     float rotationX, rotationY, rotationZ;
     bool isSelected;
     bool enableAnimation = false;
+    float timeElapsed;
     std::vector<glm::vec3> controlPoints;
 
     Object(const std::string& path, glm::vec3 startPosition);
@@ -23,7 +24,7 @@ public:
     void Animate(float time);
 
 private:
-    glm::vec3 CalculateHermitePosition(float t);
+    glm::vec3 CalculateCatmullRomPosition(int segment, float t);
 };
 
 #endif

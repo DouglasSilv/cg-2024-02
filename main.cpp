@@ -243,7 +243,11 @@ int main() {
         glfwPollEvents();
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        if (deltaTime >= 1 / 60)
+        {
+            lastFrame = currentFrame;
+        }
+
         processInput(window);
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -260,7 +264,7 @@ int main() {
             object.model.shader.setVec3("lightColor", lightColor);
             object.model.shader.setMat4("projection", projection);
             object.model.shader.setMat4("view", view);
-            object.Animate(currentFrame);
+            object.Animate(deltaTime);
             object.Draw();
         }
 

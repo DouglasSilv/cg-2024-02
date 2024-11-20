@@ -17,6 +17,9 @@ out vec4 color;
 //Buffer da textura
 uniform sampler2D texBuffer;
 
+uniform float uLightIntensity;      // Intensidade da luz
+uniform float uSpecularCoefficient; // Coeficiente especular
+
 void main()
 {
 

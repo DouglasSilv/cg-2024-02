@@ -66,7 +66,6 @@ void Object::Animate(float deltaTime) {
     position = CalculateCatmullRomPosition(segment, t);
 }
 
-
 glm::vec3 Object::CalculateCatmullRomPosition(int segment, float t) {
     if (controlPoints.size() < 4) return position;
 
